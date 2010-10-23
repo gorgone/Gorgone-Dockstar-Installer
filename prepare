@@ -1,0 +1,228 @@
+#!/bin/sh
+clear
+
+echo ""
+echo "-----------------------"
+echo "--> get System Update |"
+echo "-----------------------"
+echo ""
+apt-get -y update
+cd /usr/src
+clear
+
+echo ""
+echo "---------------------------------"
+echo "--> get 2.6.35.7 Kernel Sources |"
+echo "---------------------------------"
+echo ""
+wget ftp://ftp.kernel.org/pub/linux/kernel/v2.6/linux-2.6.35.7.tar.gz
+
+echo ""
+echo "---------------------------------"
+echo "--> extract files 2-10 minutes! |"
+echo "---------------------------------"
+echo ""
+tar -xf linux-2.6.35.7.tar.gz
+
+echo ""
+echo "------------------"
+echo "--> create links |"
+echo "------------------"
+echo ""
+ln -sf linux-2.6.35.7 linux-2.6.35.7-dockstar
+ln -sf linux-2.6.35.7 linux
+
+echo ""
+echo "---------------------"
+echo "--> get Build Files |"
+echo "---------------------"
+echo ""
+apt-get -y install subversion git-core ccache make automake libncurses5-dev flex bison genromfs gawk texinfo gettext cfv fakeroot xfslibs-dev zlib1g-dev libtool g++ swig pkg-config git-core mtd-utils squashfs-tools help2man diffstat texi2html bitbake monotone libpcsclite1 libpcsclite-dev libssl-dev rpm cmake
+
+echo ""
+echo "----------------"
+echo "--> get libusb |"
+echo "----------------"
+echo ""
+cd /usr/src
+wget http://ignum.dl.sourceforge.net/project/libusb/libusb-1.0/libusb-1.0.8/libusb-1.0.8.tar.bz2
+
+echo ""
+echo "----------------"
+echo "--> get libusb |"
+echo "----------------"
+echo ""
+tar -xf libusb-1.0.8.tar.bz2
+cd libusb-1.0.8
+
+echo ""
+echo "---------------"
+echo "--> configure |"
+echo "---------------"
+echo ""
+./configure
+
+echo ""
+echo "----------"
+echo "--> make |"
+echo "----------"
+echo ""
+make
+
+echo ""
+echo "-------------"
+echo "--> install |"
+echo "-------------"
+echo ""
+make install
+clear
+
+echo "-------------------"
+echo "--> get OSCAM SVN |"
+echo "-------------------"
+echo ""
+cd ..
+svn co http://streamboard.gmc.to/svn/oscam/trunk oscam-svn
+cd /usr/src/oscam-svn
+
+echo ""
+echo "---------------------"
+echo "--> cmake mit webif |"
+echo "---------------------"
+echo ""
+cmake . -DWEBIF=1
+
+echo ""
+echo "-----------------"
+echo "--> build OSCAM |"
+echo "-----------------"
+echo ""
+make install
+
+echo ""
+echo "--------------"
+echo "--> camstart |"
+echo "--------------"
+echo ""
+cat <<END > /usr/local/bin/camstart
+#!/bin/sh
+
+#Erststart
+/usr/local/bin/auto.restart.oscam &
+sleep 20
+
+while sleep 10
+do
+/usr/local/bin/auto.restart.oscam &
+done
+
+exit
+END
+chmod 777 /usr/local/bin/camstart
+
+echo ""
+echo "------------------------"
+echo "--> auto.restart.oscam |"
+echo "------------------------"
+echo ""
+cat <<END > /usr/local/bin/auto.restart.oscam
+#!/bin/bash
+
+#Variablen
+#---------------------------------------------------
+SERVERNAME=oscam
+STARTER="/usr/local/bin/oscam -c /usr/local/etc/ -b"
+
+#CHECK
+#---------------------------------------------------
+END
+echo 'PID=`pidof -s $SERVERNAME`' >> /usr/local/bin/auto.restart.oscam
+cat <<END >> /usr/local/bin/auto.restart.oscam
+
+if [ \${PID} >9 ] ; then
+    alles=ok
+    else
+    \$STARTER &
+fi
+exit 0
+END
+chmod 777 /usr/local/bin/auto.restart.oscam
+
+echo ""
+echo "--------------------"
+echo "-->Default Configs |"
+echo "--------------------"
+echo ""
+cp -f /usr/src/oscam-svn/Distribution/doc/example/oscam.* /usr/local/etc/
+cat <<END >/usr/local/etc/oscam.conf
+[global]
+nice            = -1
+WaitForCards    = 1
+
+[webif]
+httpport        = 8888
+httpuser        = myusername
+httppwd         = mypassword
+
+[cccam]
+port            = 12000
+version         = 2.1.3
+END
+cat <<END >/usr/local/etc/oscam.user
+[account]
+user       = user1
+pwd        = password1
+uniq       = 1
+group      = 1,2
+END
+cat <<END >/usr/local/etc/oscam.server
+[reader]
+label    = reader1
+protocol = mouse
+detect   = CD
+device   = /dev/ttyUSB0
+group    = 1
+emmcache = 1,3,2
+
+[reader]
+label      = remote4
+protocol   = cccam
+device     = 192.168.0.5,45678
+account    = login4,password4
+group      = 2
+END
+
+cat <<END >/usr/local/bin/baue
+#!/bin/bash
+
+rm -R /usr/src/oscam-svn
+cd /usr/src/
+svn co http://streamboard.gmc.to/svn/oscam/trunk oscam-svn
+cd /usr/src/oscam-svn
+./config.sh
+<<<<<<< HEAD
+cmake . -DWEBIF=1
+mv /usr/local/bin/oscam /usr/local/bin/oscam.davor
+=======
+
+cmake . -DWEBIF=1
+
+mv /usr/local/bin/oscam /usr/local/bin/oscam.davor
+
+>>>>>>> 6976771dbd8c27268b9be87d22359128a66af625
+make install
+END
+chmod 777 /usr/local/bin/baue
+
+echo ""
+echo "--------------------------"
+echo "-->Startlinks & Watchdog |"
+echo "--------------------------"
+echo ""
+echo "/usr/local/bin/camstart &" >>/tmp/rc.local
+echo "">>/tmp/rc.local
+echo "exit">>/tmp/rc.local
+cat /tmp/rc.local >/etc/rc.local
+
+#killmyself
+rm /usr/local/bin/prepare
