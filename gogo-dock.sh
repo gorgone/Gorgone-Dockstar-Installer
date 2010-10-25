@@ -226,8 +226,54 @@ then
   exit
 fi
 
+#-------------------------------------------------------------
+#Flashing PART
+#-------------------------------------------------------------
 clear
 
+echo ""
+echo " ------------------------------------------------------"
+echo " | Flashing Dockstars internel Memory !!!!!!!!!!!!!!! |"
+echo " ------------------------------------------------------"
+echo ""
+echo "      This script will REPLACE the BOOTLOADER"
+echo "      or the COMPLETE Pogo Dockstar System !!"
+echo "      Please be sure what you want to do !!!!"
+echo ""
+echo ""
+echo "-------------------------------------------------------"
+echo "| type UBOOT in uppercase to flash bootloader only    |"
+echo "| type RESCUE in uppercase to flash the rescue System |"
+echo "| type 0 (zero) to skip Flashing the Dockstar         |"
+echo "-------------------------------------------------------"
+echo ""
+echo -n "type UBOOT/RESCUE/0 : "
+
+read IS_FLASING
+
+if [ "$IS_FLASING" = "UBOOT" ];
+then
+    cd /tmp
+    wget http://jeff.doozan.com/debian/uboot/install_uboot_mtd0.sh
+    chmod +x install_uboot_mtd0.sh
+    export PATH=$PATH:/usr/sbin:/sbin
+    ./install_uboot_mtd0.sh
+fi
+
+if [ "$IS_FLASING" = "RESCUE" ];
+then
+    cd /tmp
+    wget http://jeff.doozan.com/debian/rescue/install_rescue.sh
+    chmod +x install_rescue.sh
+    export PATH=$PATH:/usr/sbin:/sbin
+    ./install_rescue.sh
+fi
+
+#-------------------------------------------------------------
+#Flashing PART Done
+#-------------------------------------------------------------
+
+#ROOT STICK Definitions
 ROOT_DEV=/dev/sda1 # Don't change this, uboot expects to boot from here
 SWAP_DEV=/dev/sda2
 
