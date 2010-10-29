@@ -1,32 +1,32 @@
 !!!Wichtig!!!
 Bevor man den Dockstar mit dem Internet verbindet muss man zuerst das "nachhause Telefonieren" unterbinden.
 Macht man das nicht, wird per Autoupdate die neue Firmware eingespielt, mit einem noch unbekannten SSH Passwort.
-Dann bleibt nur noch der Weg, dass Gerät über die Homepage zu registrieren.
+Dann bleibt nur noch der Weg, dass Geraet ueber die Homepage zu registrieren.
 Dort kann man dann auch ein neues SSH Passwort setzen.
 
 Wie geht man also vor?
 ----------------------
-1. Den Router daheim disconnecten, so dass keine Internetverbindung besteht.
-2. Dockstar ans Netz anschliessen und anschalten.
-3. IP herausfinden (über den Router oder mit arp o.ä.)
-4. Auf den DockStar Connecten mit username: root password: stxadmin (SSH)
-5. Rootverzeichnis schreibbar mounten mit "mount -o rw,remount /"
-6. "vi /etc/init.d/rcS" , dort dann die Zeile mit "/init.d/hbmgr.sh start" auskommentieren!
-7. Änderungen speichern und den DockStar neustarten mit "/sbin/reboot"
+01. Den Router daheim disconnecten, so dass keine Internetverbindung besteht.
+02. Dockstar ans Netz anschliessen und anschalten.
+03. IP herausfinden (ueber den Router oder mit arp o.anderen.)
+04. Auf den DockStar Connecten mit username: root password: stxadmin (SSH)
+05. Rootverzeichnis schreibbar mounten mit "mount -o rw,remount /"
+06. "vi /etc/init.d/rcS" , dort dann die Zeile mit "/init.d/hbmgr.sh start" auskommentieren!
+07. Aenderungen speichern und den DockStar neustarten mit "/sbin/reboot"
 
 Dann ist das nachhause Telefonieren abgeschaltet und man kann das Internet am Router wieder aktivieren.
 Jetzt kann man, wenn man will, z.B. Debian installieren.
 
 und so installiert mann Debian auf dem Docki
 --------------------------------------------
-1. Dockstar starten
-2. partitionierten Stick (ca.2gb) anstecken (2 partitionen ext2/swap)
-3. IP herausfinden (über den Router oder mit arp o.ä.)
-4. Auf den DockStar Connecten mit username: root password: stxadmin (SSH)
-5. cd /tmp
-6. wget http://ss4200.homelinux.com/dockstar/gogo-dock.sh
-7. chmod 777 gogo-dock.sh
-8. ./gogo-dock.sh
-9. Nun den anweisungen folgen
+01. Dockstar starten
+02. partitionierten Stick (ca.2gb) anstecken (2 partitionen ext2/swap)
+03. IP herausfinden (ueber den Router oder mit arp o.anderen.)
+04. Auf den DockStar Connecten mit username: root password: stxadmin (SSH)
+05. cd /tmp
+06. wget http://ss4200.homelinux.com/dockstar/gogo-dock.sh
+07. chmod 777 gogo-dock.sh
+08. ./gogo-dock.sh
+09. Nun den anweisungen folgen
 10. nach dem Neustart einloggen mit username: root password: root
-11. prepare ausführen
+11. prepare ausfuehren
