@@ -383,7 +383,8 @@ echo ""
 tar xzf gogokernel.tar.gz -C /tmp/debian/
 
 # Install blparam
-wget -O $ROOT/usr/local/bin/blparam $BLPARAM_URL
+wget -O /tmp/blparam $BLPARAM_URL
+mv /tmp/blparam $ROOT/usr/local/bin/blparam
 chmod +x $ROOT/usr/local/bin/blparam
 
 echo ""
