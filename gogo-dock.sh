@@ -181,6 +181,20 @@ install ()
 clear
 
 if ! which chroot >/dev/null; then
+    echo ""
+    echo ""
+    echo ""
+    echo ""
+    echo "Cannot find chroot.  You need to update your PATH."
+    echo "Run the following command and then run this script again:"
+    echo ""
+    echo 'try to set export PATH=$PATH:/sbin:/usr/sbin'
+    echo ""
+    echo ""
+  export PATH=$PATH:/sbin:/usr/sbin
+fi
+
+if ! which chroot >/dev/null; then
   echo ""
   echo ""
   echo ""
@@ -188,8 +202,6 @@ if ! which chroot >/dev/null; then
   echo ""
   echo "Cannot find chroot.  You need to update your PATH."
   echo "Run the following command and then run this script again:"
-  echo ""
-  echo 'export PATH=$PATH:/sbin:/usr/sbin'
   echo ""
   exit 1
 fi
