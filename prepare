@@ -128,13 +128,9 @@ echo ""
 cat <<END > /usr/local/bin/auto.restart.oscam
 #!/bin/bash
 
-#Variablen
-#---------------------------------------------------
 SERVERNAME=oscam
 STARTER="/usr/local/bin/oscam -c /usr/local/etc/ -b"
 
-#CHECK
-#---------------------------------------------------
 END
 echo 'PID=`pidof -s $SERVERNAME`' >> /usr/local/bin/auto.restart.oscam
 cat <<END >> /usr/local/bin/auto.restart.oscam
@@ -199,16 +195,10 @@ cd /usr/src/
 svn co http://streamboard.gmc.to/svn/oscam/trunk oscam-svn
 cd /usr/src/oscam-svn
 ./config.sh
-<<<<<<< HEAD
 cmake . -DWEBIF=1
 mv /usr/local/bin/oscam /usr/local/bin/oscam.davor
-=======
-
 cmake . -DWEBIF=1
-
 mv /usr/local/bin/oscam /usr/local/bin/oscam.davor
-
->>>>>>> 6976771dbd8c27268b9be87d22359128a66af625
 make install
 END
 chmod 777 /usr/local/bin/baue

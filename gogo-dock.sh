@@ -24,19 +24,19 @@
 
 # Version 1.0   [8/8/2010] Initial Release
 
+MIRROR="http://jeff.doozan.com/debian"
 
 # Definitions
 
 # Download locations
-MKE2FS_URL=http://ss4200.homelinux.com/dockstar/mke2fs
-BLPARAM_URL=http://ss4200.homelinux.com/dockstar/blparam
-PKGDETAILS_URL=http://ss4200.homelinux.com/dockstar/pkgdetails
+MKE2FS_URL=$MIRROR/mke2fs
+BLPARAM_URL=$MIRROR/blparam
+PKGDETAILS_URL=$MIRROR/pkgdetails
 #neuer debootstrap
 URL_DEBOOTSTRAP=http://ftp.de.debian.org/debian/pool/main/d/debootstrap/debootstrap_1.0.25_all.deb
 
 # Default binary locations
 MKE2FS=/sbin/mke2fs
-BLPARAM=/usr/sbin/blparam
 PKGDETAILS=/usr/share/debootstrap/pkgdetails
 
 # Where should the temporary 'debian root' be mounted
@@ -309,7 +309,6 @@ if ! which mke2fs >/dev/null; then
 else
   MKE2FS=$(which mke2fs)
 fi
-install "$BLPARAM"        "$BLPARAM_URL"         755
 
 $MKE2FS $ROOT_DEV
 /sbin/mkswap $SWAP_DEV
@@ -389,12 +388,6 @@ echo "Install Kernel & Module"
 echo "-----------------------"
 echo ""
 tar xzf gogokernel.tar.gz -C /tmp/debian/
-
-# Install blparam
-wget -O /tmp/blparam $BLPARAM_URL
-mv /tmp/blparam $ROOT/usr/local/bin/blparam
-chmod +x $ROOT/usr/local/bin/blparam
-
 echo ""
 echo "Apply LED / DATE /Other Fixes"
 echo ""
